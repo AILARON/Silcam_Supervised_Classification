@@ -7,7 +7,8 @@
 ###### email: annette.stahl@ntnu.no
 ###### funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
 ###### Copyright @NTNU 2019
-
+---------------------------------------------------
+<!-- -->
 ###### Date created: 29 September 2019
 A Modularized implementation for
 Image enhancement, segmentation, classification, evaluation and visualization
