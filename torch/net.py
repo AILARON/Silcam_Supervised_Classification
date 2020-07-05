@@ -77,7 +77,9 @@ class Unit(nn.Module):
 class COAPModNet(nn.Module):
     def __init__(self, num_classes=10):
         super(COAPModNet, self).__init__()
-        # The next 6 lines of code were inspired by Bjarne Kaestad
+        # The next 6 lines of code were inspired 
+        # by Bjarne Kaestad 
+        # Environment and New Resources, SINTEF Ocean, Trondheim, Norway 
         self.unit1 = Unit(in_channels=3, out_channels=64, max_pool=True)
         self.unit2 = Unit(in_channels=64, out_channels=128, max_pool=True)
         self.unit3 = Unit(in_channels=128, out_channels=256, max_pool=True)
