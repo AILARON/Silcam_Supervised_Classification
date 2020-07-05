@@ -1,13 +1,17 @@
 #################################################################################################################
-# A Modularized implementation for
-# Image enhancement, extracting descriptors, clustering, evaluation and visualization
-# Integrating all the algorithms stated above in one framework
-# CONFIGURATION - LOAD_DATA - IMAGE_ENHANCEMENTS - IMAGE_DESCRIPTORS - CLUSTERING - EVALUATION_VISUALIZATION
+# The Pytorch supervised classifier module
 # Implementation of the DatasetLoader class
 # Author: Aya Saad
-# Date created: 30 September 2019
+# email: aya.saad@ntnu.no
 #
-#################################################################################################################
+# Date created: 29 September 2019
+#
+# Project: AILARON
+# Contact
+# email: annette.stahl@ntnu.no
+# funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
+# Copyright @NTNU 2020
+#######################################
 
 import os
 import csv

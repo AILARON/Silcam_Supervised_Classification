@@ -1,10 +1,10 @@
 #################################################################################################################
-# The Pytorch supervised classifier module
+# The Pytorch neural network architecture module
 # Implementation of the configuration
 # Author: Aya Saad
 # email: aya.saad@ntnu.no
 #
-# Date created: 29 September 2019
+# Date created: 6 April 2020
 #
 # Project: AILARON
 # Contact
@@ -14,7 +14,7 @@
 #######################################
 
 import argparse
-
+import os
 arg_lists = []
 parser = argparse.ArgumentParser(description='Image Classification')
 
@@ -37,16 +37,21 @@ mode_arg.add_argument('--random_seed', type=int, default=42,
 
 # path params
 misc_arg = add_argument_group('Path Params')
-misc_arg.add_argument('--data_dir', type=str, default='./dataset',
+misc_arg.add_argument('--data_dir', type=str, default='C:/Users/ayas/Projects/AILARON/Implementation/PySilCam/pysilcam-testdata/unittest-data/silcam_classification_database',
                         help='Directory where data is stored')
-misc_arg.add_argument('--output_dir', type=str, default='./output',
+misc_arg.add_argument('--output_dir', type=str, default='D:/resnet_test/model',
                         help='Directory where output is stored')
 misc_arg.add_argument('--plot_dir', type=str, default='./plots',
                         help='Directory where plots are stored')
-misc_arg.add_argument('--model_dir', type=str, default='./model',
+misc_arg.add_argument('--model_dir', type=str, default='D:/resnet_test/model',
                         help='Directory where the trained model is stored')
 
 
 def get_config():
     config, unparsed = parser.parse_known_args()
     return config, unparsed
+
+def prepare_dirs(config):
+    for path in [config.model_dir, config.output_dir, config.plot_dir]:
+        if not os.path.exists(path):
+            os.makedirs(path)
