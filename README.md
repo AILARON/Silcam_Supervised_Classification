@@ -3,4 +3,12 @@
 
 # Silcam Supervised Classification
 Comparing the performance metrics of different neural network architectures
-
+###### Author: Aya Saad
+###### email: aya.saad@ntnu.no
+###### Project: AILARON
+###### Contact
+###### email: annette.stahl@ntnu.no
+###### funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
+###### Copyright @NTNU 2019
+---------------------------------------------------
+<!-- -->
