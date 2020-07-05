@@ -402,6 +402,15 @@ class CoapNet(Net):
 
 
 # LeNet based on the LeNet paper
+# @article{lecun2015lenet,
+#  title={LeNet-5, convolutional neural networks},
+#  author={LeCun, Yann and others},
+#  journal={URL: http://yann. lecun. com/exdb/lenet},
+#  volume={20},
+#  number={5},
+#  pages={14},
+#  year={2015}
+# }
 class LeNet(Net):
     def __preprocessing(self):
         '''
