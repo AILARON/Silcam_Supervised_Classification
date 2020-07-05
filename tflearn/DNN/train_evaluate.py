@@ -1,3 +1,18 @@
+#################################################################################################################
+# TA Modularized implementation for the network architecture module
+# Implementation of train_evaluate 
+# Author: Aya Saad
+# email: aya.saad@ntnu.no
+#
+# Date created: 30 September 2019
+#
+# Project: AILARON
+# Contact
+# email: annette.stahl@ntnu.no
+# funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
+# Copyright @NTNU 2020
+#######################################
+
 import os
 import numpy as np
 import tensorflow as tf
