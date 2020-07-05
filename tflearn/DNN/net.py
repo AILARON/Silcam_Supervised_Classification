@@ -1,14 +1,18 @@
 #################################################################################################################
-# A Modularized implementation for
-# Image enhancement, extracting descriptors, clustering, evaluation and visualization
-# Integrating all the algorithms stated above in one framework
-# CONFIGURATION - LOAD_DATA - IMAGE_ENHANCEMENTS - IMAGE_DESCRIPTORS - CLUSTERING - EVALUATION_VISUALIZATION
-# Implementation of the Net class
-# The Deep Neural Netowrk Architecture
+# TA Modularized implementation for the network architecture module
+# Implementation of the net class
 # Author: Aya Saad
+# email: aya.saad@ntnu.no
+#
 # Date created: 30 September 2019
 #
-#################################################################################################################
+# Project: AILARON
+# Contact
+# email: annette.stahl@ntnu.no
+# funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
+# Copyright @NTNU 2020
+#######################################
+
 from sklearn import metrics
 
 import tflearn
@@ -182,6 +186,9 @@ class Net:
 
     pass
 
+
+# the original SilCamNet from Sintef github
+# https://github.com/SINTEF/PySilCam
 class SilCamNet(Net):
     def __preprocessing(self):
         '''
@@ -283,6 +290,9 @@ class SilCamNet(Net):
         return model, conv_arr
     pass
 
+# implementation of COAPNet from Bjarne's email conversation
+# this netowrk architecture is was initially proposed by 
+# Bjarne Kvaestad, SINTEF Ocean AS, Environment and New Resources, Trondheim, Norway
 class CoapNet(Net):
     def __preprocessing(self):
         '''
@@ -390,6 +400,8 @@ class CoapNet(Net):
         return model, conv_arr
     pass
 
+
+# LeNet based on the LeNet paper
 class LeNet(Net):
     def __preprocessing(self):
         '''
@@ -483,6 +495,7 @@ class LeNet(Net):
         return model, conv_arr
     pass
 
+# taken from http://tflearn.org/examples/
 class MINSTNet(Net):
     def __preprocessing(self):
         '''
@@ -579,6 +592,7 @@ class MINSTNet(Net):
         return model, conv_arr
     pass
 
+# architecture can be found at http://tflearn.org/examples/
 class CIFAR10Net(Net):
     def __preprocessing(self):
         '''
@@ -669,7 +683,15 @@ class CIFAR10Net(Net):
         conv_arr = [conv_1, conv_2, conv_3]
         return model, conv_arr
     pass
-
+# zooplankton net is based on the paper
+# @inproceedings{Dai2016,
+#  title={ZooplanktoNet: Deep convolutional network for zooplankton classification},
+#  author={Dai, Jialun and Wang, Ruchen and Zheng, Haiyong and Ji, Guangrong and Qiao, Xiaoyan},
+#  booktitle={OCEANS 2016-Shanghai},
+#  pages={1--6},
+#  year={2016},
+#  organization={IEEE}
+# }
 class PlankNet(Net):
     def __preprocessing(self):
         '''
@@ -761,6 +783,7 @@ class PlankNet(Net):
         return model, conv_arr
     pass
 
+# based on AlexNet architecture can be found at http://tflearn.org/examples/
 class AlexNet(Net):
     def __preprocessing(self):
         '''
@@ -838,7 +861,7 @@ class AlexNet(Net):
         conv_arr = [conv_1, conv_2, conv_3, conv_4, conv_5]
         return model, conv_arr
     pass
-
+# based on VGGNet architecture can be found at http://tflearn.org/examples/
 class VGGNet(Net):
     def __preprocessing(self):
         '''
@@ -944,7 +967,7 @@ class VGGNet(Net):
                     conv_8, conv_9, conv_10, conv_11, conv_12, conv_13]
         return model, conv_arr
     pass
-
+# based on GoogleNet architecture can be found at http://tflearn.org/examples/
 class GoogleNet(Net):
     def __preprocessing(self):
         '''
@@ -1186,6 +1209,7 @@ class GoogleNet(Net):
         return model, conv_arr
     pass
 
+# based on ResNet architecture can be found at http://tflearn.org/examples/
 class ResNet(Net):
     def __preprocessing(self):
         '''
@@ -1261,6 +1285,7 @@ class ResNet(Net):
         return model, conv_arr
     pass
 
+# based on ResNeXt architecture can be found at http://tflearn.org/examples/
 class ResNeXt(Net):
     def __preprocessing(self):
         '''
