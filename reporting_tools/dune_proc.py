@@ -41,9 +41,9 @@ def proc_eststate(df):
 special_data_proc = {
     'WaterVelocity': proc_watervel,
     'EstimatedState': proc_eststate,
-    'Temperature': (lambda df: df[df.entity == 'SmartX']),
-    'Pressure': (lambda df: df[df.entity == 'SmartX']),
-    'Acceleration': (lambda df: df.add_prefix('acc_')),
+    'Temperature': (lambda df: df[df.entity == ' SmartX']),
+    'Pressure': (lambda df: df[df.entity == ' SmartX']),
+    #'Acceleration': (lambda df: df.add_prefix('acc_')),
 }
 
 
@@ -67,7 +67,7 @@ def load_neptus_csvs(path):
     # coding: utf-8
     local_encoding = 'cp850'  # adapt for other encodings
     try:
-        print(path)
+        #print(path)
         path = Path(path)
     except TypeError as e:
         print('TypeError: path', e)
@@ -97,7 +97,6 @@ def load_neptus_csvs(path):
     tol = pd.Timedelta('250ms')
     for f in files:
         name = f.stem
-        print('name: ', name)
         df = pd.read_csv(f, sep=',', encoding='gbk')  # encoding= 'unicode_escape' 'latin1'
         df, unit = proc_dune_df(name, df)
         units.update(zip(df.columns, unit))
