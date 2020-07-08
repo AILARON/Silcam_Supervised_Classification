@@ -128,6 +128,6 @@ def load_mission_list(mission_list, neptus_dir, csv_path="/mra/csv"):
             df = df2
             r = 1
         else:
-            df = df.append(df2)
+            df = df.append(df2, sort=True)
 
     return df

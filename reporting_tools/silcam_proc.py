@@ -82,7 +82,10 @@ def load_silcam_data(files, path):
     for f in files:
         df = pd.read_csv(path + files[0], parse_dates=['timestamp'])
         df = df[df['export name'] != 'not_exported']
-        stat = stat.append(df)
+        stat = stat.append(df, sort=True)
+        stat = stat.reset_index()
+        stat.set_index('timestamp', inplace=True)
+        stat = stat.tz_localize('UTC')
         stat = stat.reset_index()
         stat.set_index('timestamp', inplace=True)
         stat.dropna()
@@ -149,7 +152,7 @@ def stat_grouped(df):
     '''
     #belongs = df.filter(like='probability') >= lim
     comb = df.groupby('timestamp').first() # [#/L]
-    comb = comb.tz_localize('UTC')
+    #comb = comb.tz_localize('UTC')
     return comb
 
 ### Convert a list of silc files to bmp images
@@ -313,13 +316,11 @@ def del_small_files(pathname, minsize):
             os.remove(pathname + f.stem + '.tiff')
 
 ### associate speed with raw images
-def get_raw_speed(stat_comb, speed_int, RAWDIR, RAWSPEEDBMP):
+def get_raw_speed(stat_comb, scenes, speed_int):
     '''
 
     :param stat_comb: stat file contains the raw images and the neptus information
     :param speed_int: interval of speeds we need to report
-    :param RAWDIR: Raw image directory
-    :param RAWSPEEDBMP: output directory
     :return: new_stat the images associated with the depth, Rpm and water velocity
     '''
     new_stat = stat_comb.loc[sum([stat_comb['export name'].str.contains(f) for f in scenes]) > 0]
