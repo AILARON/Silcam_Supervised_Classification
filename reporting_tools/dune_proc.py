@@ -1,6 +1,6 @@
 #################################################################################################################
-# The Pytorch tool module
-# Implementation of the dataloader
+# The Reporting tool from neptus logs
+# Implementation of the dune proc
 # Author: Andreas Våge
 # email: andreas.vage@ntnu.no
 #
@@ -109,7 +109,14 @@ def load_neptus_csvs(path):
 
 # @Aya Saad added on 7 July 2020
 # load mission list if more than one mission on the same day
-def load_mission_list(mission_list, neptus_dir, csv_path):
+def load_mission_list(mission_list, neptus_dir, csv_path="/mra/csv"):
+    '''
+    
+    :param mission_list: the list of plans created in neptus
+    :param neptus_dir: neptus logs directory
+    :param csv_path: path to exported csv default = "/mra/csv"
+    :return: merged df
+    '''
     data = {}
     df = pd.DataFrame([])
     r = 0
