@@ -99,6 +99,7 @@ def load_neptus_csvs(path):
         name = f.stem
         df = pd.read_csv(f, sep=',', encoding='gbk')  # encoding= 'unicode_escape' 'latin1'
         df, unit = proc_dune_df(name, df)
+        df = df.sort_values(by=['timestamp'])
         units.update(zip(df.columns, unit))
         if mdf is None:
             mdf = df
