@@ -19,6 +19,10 @@ Network architecture-train-validate-test
 
 ###Installation
 
+    ## install through the yaml environment file
+    conda env create -f environment.yml
+
+
     ## Create a conda environment
     
     ## conda create -n <environment name> pip python scikit-image pandas seaborn numpy matplotlib scikit-learn scipy
