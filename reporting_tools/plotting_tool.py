@@ -1,3 +1,16 @@
+# Implementation of the dataloader
+# Author: Aya Saad
+# email: aya.saad@ntnu.no
+#
+# Date created: 6 April 2020
+#
+# Project: AILARON
+# Contact
+# email: annette.stahl@ntnu.no
+# funded by RCN IKTPLUSS program (project number 262741) and supported by NTNU AMOS
+# Copyright @NTNU 2020
+#######################################
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker

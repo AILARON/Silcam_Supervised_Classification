@@ -9,7 +9,7 @@
 # Project: AILARON
 # Contact
 # email: annette.stahl@ntnu.no
-# funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
+# funded by RCN IKTPLUSS program (project number 262741) and supported by NTNU AMOS
 # Copyright @NTNU 2020
 #######################################
 import numpy as np
@@ -22,49 +22,6 @@ import skimage.io as skio
 
 # -*- coding: utf-8 -*-
 local_encoding = 'cp850'  # adapt for other encodings
-
-# Interpolating the stats from the export to sensors' data on the timestamp field
-# returns df
-def df_interpolate(np1, np2, featurename):
-    ''' numpy interpolation
-    Args:
-    @:param np1: numpy from the stat file.
-    @:param np2: numpy from the neptus logs.
-    @:return df: new numpy combined
-    '''
-    df = np1
-    df[featurename] = np.interp(np.float64(df['timestamp']),
-                                np.float64(np2['timestamp']),
-                                np2[featurename])
-
-    return df
-
-#### extract middle
-### returns stats
-def extract_middle(stats, crop_bounds):
-    '''
-    Temporary cropping solution due to small window in AUV
-    Args:
-    @:param stats (df)    : silcam stats file
-    @:param crop_bounds (tuple) : 4-tuple of lower-left then upper-right coord of crop
-    Returns:
-    @:return stats (df)    : cropped silcam stats file
-    '''
-    # print('initial stats length:', len(stats))
-    r = np.array(((stats['maxr'] - stats['minr']) / 2) + stats['minr'])
-    c = np.array(((stats['maxc'] - stats['minc']) / 2) + stats['minc'])
-
-    points = []
-    for i in range(len(c)):
-        points.append([(r[i], c[i])])
-
-    pts = np.array(points)
-    pts = pts.squeeze()
-    ll = np.array(crop_bounds[:2])  # lower-left
-    ur = np.array(crop_bounds[2:])  # upper-right
-    inidx = np.all(np.logical_and(ll <= pts, pts <= ur), axis=1)
-    stats = stats[inidx]
-    return stats
 
 ### load silcam data from the list of exported files
 ### returns stat
@@ -154,117 +111,6 @@ def stat_grouped(df):
     comb = df.groupby('timestamp').first() # [#/L]
     #comb = comb.tz_localize('UTC')
     return comb
-
-### Convert a list of silc files to bmp images
-def silc_to_bmp(filenames, indir, outdir):
-    '''
-    Convert a list of silc files to bmp images
-    Args:
-    :param filenames: list of filenames
-    :param indir: input directory
-    :param outdir: output directory
-    :return:
-    '''
-
-    # files = [s for s in os.listdir(directory) if s.endswith('.silc')]
-    try:
-        os.mkdir(outdir)
-    except OSError:
-        print("Creation of the directory %s failed" % outdir)
-    else:
-        print("Successfully created the directory %s " % outdir)
-
-
-    for f in filenames:
-        try:
-            with open(os.path.join(indir, f + '.silc'), 'rb') as fh:
-                im = np.load(fh, allow_pickle=False)
-                #fout = os.path.splitext(f)[0] + '.bmp'
-            outname = os.path.join(outdir, f  + '.bmp')
-            imo.imwrite(outname, im)
-        except:
-            print('{0} failed!'.format(f))
-            continue
-
-    print('conversion completed!')
-
-### returns an image name from the export name string in the -STATS.csv file
-def export_name2im(exportname, path):
-    '''
-    returns an image from the export name string in the -STATS.csv file
-    get the exportname like this: exportname = stats['export name'].values[0]
-    Args:
-    :param exportname: string containing the name of the exported particle e.g. stats['export name'].values[0]
-    :param path: path to exported h5 files
-    Returns:
-    :return: im : particle ROI image
-    '''
-    print('inside export_name2im', exportname)
-    # the particle number is defined after the time info
-    pn = exportname.split('-')[1]
-    # the name is the first bit
-    name = exportname.split('-')[0] + '.h5'
-    # combine the name with the location of the exported HDF5 files
-    fullname = os.path.join(path, name)
-    # open the H5 file
-    fh = h5py.File(fullname ,'r')
-    # extract the particle image of interest
-    im = fh[pn]
-
-    return im
-
-### extract the roi and save them into the extract directory
-### returns df_extract that contains information on the actual saved roi
-def extract_to_roi(stat, stat_comb, roidir, extdir, msize=40, minimgsize=1000):
-    '''
-    extract the roi and save them into the extract directory
-    Args:
-    :param stat: stat dataframe from the export name
-    :param stat_comb: stat dataframe which includes the depth and information from neptus logs
-    :param roidir: path to the export directory where the .h5 files are saved
-    :param extdir: path to the output directory where the extracted images of the objects are saved
-    :param msize: minimum length/width size of the extracted object in pixels
-    :param minimgsize: minimum image size acceptable for labeling in bytes
-    :return:
-    '''
-    df_extract = pd.DataFrame([])
-    r = 0
-    for f in stat_comb['file name'].tolist():
-        dfe = stat[stat['export name'].str.contains(f)]
-        name = dfe['export name'].tolist()[0]
-        particle_image = export_name2im(name, roidir)
-        # measure the size of this image
-        [height, width] = np.shape(particle_image[:, :, 0])
-        # sanity-check on the particle image size
-        if (height <= msize) and (width <= msize):
-            continue
-        copy_to_path = os.path.join(extdir, name)
-        file = copy_to_path + '.tiff'
-        skio.imsave(file, particle_image)
-        if del_if_small(file, minimgsize):
-            continue
-        if r == 0:
-            df_extract = dfe
-            r = 1
-        else:
-            df_extract = df_extract.append(dfe)
-    return df_extract
-
-### save the list of objects into a list of image files
-def objects_to_file(df, inpath, outpath):
-    '''
-    save the object into an image file
-    Args:
-    :param df:   pandas dataframe containing the export name
-    :param inpath: path to the export directory where the .h5 files are saved
-    :param outpath: path to the output directory where the extracted images of the objects are saved
-    :return:
-    '''
-    for n in df['export name'].tolist():
-        im = export_name2im(n, inpath)
-        copy_to_path = os.path.join(outpath,n)
-        skio.imsave(copy_to_path + '.tiff', im)
-    print('export completed!')
 
 ### delete an image file if it is less that a minimum size
 ### returns if deleted when small
