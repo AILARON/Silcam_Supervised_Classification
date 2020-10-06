@@ -47,6 +47,10 @@ Network architecture-train-validate-test
 
 ###Usage
 
+##### load the data
+    python dataloader.py [--output-dir output_directory_name] [--data-dir data_directory_name]
+
+##### train the model
     python trainnet.py [--output-dir output_directory_name] [--data-dir data_directory_name]
     
     Path options:
