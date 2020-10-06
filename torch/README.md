@@ -18,7 +18,8 @@ Network architecture-train-validate-test
 
 ###Installation
     ## Create a conda environment
-    conda create -n <environment name> pip python scikit-image pandas seaborn numpy matplotlib scikit-learn scipy
+    
+    ## conda create -n <environment name> pip python scikit-image pandas seaborn numpy matplotlib scikit-learn scipy
     ex: conda create -n trainnet pip python scikit-image pandas 
     
     ## Activate the conda environment
