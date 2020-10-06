@@ -342,4 +342,59 @@ def show_batch(sample_batched):
     #plt.imshow(grid.numpy().transpose((1, 0, 2)))
 
 
+if __name__ == '__main__':
+    config, unparsed = get_config()
+    np.random.seed(config.random_seed)
+    prepare_dirs(config)
+    header_file = config.data_dir + '/header.tfl.txt'
+    log_file = os.path.join(config.model_dir, 'out.txt')
+    filename = 'image_set.dat'
+    print(config.data_dir, config.model_dir, header_file, log_file, filename)
+    resize = Resize(64)
+    crop = RandomCrop(64)
+    trotate = RandomRotation()
 
+    composed = transforms.Compose([Resize(64), RandomRotation(), Resize(64),
+                                   ToTensor(), Normalization()])
+    dataset = PlanktonDataSet(data_dir=config.data_dir, header_file = header_file,
+                 csv_file=filename, transform=composed)  # ,transform=Resize(64)
+
+    print('dataset.get_classes_from_file(): ', len(dataset.get_classes_from_file()))
+
+    batch_size = 4
+    dataloader = DataLoader(dataset, batch_size=batch_size,
+                            shuffle=True, num_workers=batch_size)
+
+    ####  split dataset into train, test and validate
+    print(len(dataset))
+    split_size = int(len(dataset) * 0.15)
+    indices = list(range(len(dataset)))
+    train, validate, test = random_split(dataset,
+                                         [len(dataset) - 2 * split_size,
+                                          split_size,
+                                          split_size])
+    print(len(train))
+    train_loader = DataLoader(train, batch_size=batch_size, shuffle=True)
+    print(len(validate))
+    validate_loader = DataLoader(validate, batch_size=batch_size, shuffle=True)
+    print(len(test))
+    test_loader = DataLoader(test, batch_size=batch_size, shuffle=True)
+
+    i = 0
+    plt.figure()
+    for i_batch, sample_batched in enumerate(test_loader):
+        i = i + 1
+        #print(i_batch)  #, sample_batched['image'].size(),sample_batched['label']
+        print(i_batch, sample_batched['image'].size(),
+              sample_batched['label'])
+
+        ax = plt.subplot(1, batch_size, i)
+        plt.tight_layout()
+        show_batch(sample_batched)
+        plt.axis('off')
+        plt.ioff()
+
+        # observe 4th batch and stop.
+        if i_batch == 3:
+            plt.show()
+            break
