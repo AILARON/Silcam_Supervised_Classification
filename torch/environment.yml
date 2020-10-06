@@ -1,0 +1,16 @@
+name: trainnet
+channels:
+    - conda-forge
+    - pytorch
+    - anaconda
+dependencies:
+    - pytorch
+    - imageio
+    - torchvision
+    - opencv
+    - scikit-learn
+    - tqdm
+    - time
+    - pip
+    - pip:
+        - opencv.contrib-python
