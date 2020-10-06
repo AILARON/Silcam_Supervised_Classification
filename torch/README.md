@@ -42,4 +42,19 @@ Network architecture-train-validate-test
 
 ---------------------------------------------------
 
+###Usage
 
+    python main.py [--output-dir output_directory_name] [--data-dir data_directory_name]
+    
+    Path options:
+    
+    --data_dir        # Directory where data is stored
+    --output_dir      # Directory where output is stored
+    --model_dir       # Directory where the trained model is stored
+    --plot_dir        # Directory where plots are stored  
+    
+    Mode options:
+    --random_seed    # to ensure reproducibility
+
+
+---------------------------------------------------
