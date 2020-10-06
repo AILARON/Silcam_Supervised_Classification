@@ -29,7 +29,8 @@ import cv2
 import random
 from PIL import Image
 
-from torch_tools.torchutils import *
+from torchutils import *
+from trainconfig import *
 
 def single_img_dataloader(image):
     """Crop randomly the image in a sample.
