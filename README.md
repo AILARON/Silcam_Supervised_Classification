@@ -8,7 +8,7 @@ Comparing the performance metrics of different neural network architectures
 ###### Project: AILARON
 ###### Contact
 ###### email: annette.stahl@ntnu.no
-###### funded by RCN IKTPLUSS program (project number 262701) and supported by NTNU AMOS
+###### funded by RCN IKTPLUSS program (project number 262741) and supported by NTNU AMOS
 ###### Copyright @NTNU 2019
 ---------------------------------------------------
 <!-- -->
