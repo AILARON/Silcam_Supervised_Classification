@@ -20,9 +20,9 @@ from tqdm import tqdm
 import time
 from torch import optim
 from torch.utils.data import Dataset, DataLoader, random_split
-from torch_tools.trainconfig import *
-from torch_tools.net import *
-from torch_tools.dataloader import *
+from trainconfig import *
+from net import *
+from dataloader import *
 from torch import nn
 import torchvision.models as models
 
