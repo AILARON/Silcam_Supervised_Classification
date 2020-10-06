@@ -44,7 +44,7 @@ Network architecture-train-validate-test
 
 ###Usage
 
-    python main.py [--output-dir output_directory_name] [--data-dir data_directory_name]
+    python trainnet.py [--output-dir output_directory_name] [--data-dir data_directory_name]
     
     Path options:
     
