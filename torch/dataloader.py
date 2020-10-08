@@ -216,6 +216,23 @@ class Resize(object):
         img = transform.resize(image, (new_h, new_w))
         return {'image': img, 'label': label}
 
+
+class convertToRGB(object):
+    """Convert image to rgb if in gray scale.
+    """
+ 
+    def __call__(self, sample):
+        image, label = sample['image'], sample['label']
+        
+        # Converting image to rgb if it is in grayscale
+        if len(image.shape) < 3:
+            img = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+        
+        return {'image': img, 'label': label}
+
+
+
+
 class Rescale(object):
     """Rescale the image in a sample to a given size.
 
@@ -291,32 +308,11 @@ class RandomCrop(object):
 
         return {'image': image, 'label': label}
 
-
-class ConvertToRGB(object):
-
-    def __call__(self):
-        if self.isGray():
-            img_float32 = np.float32(self)
-            return cv2.cvtColor(img_float32, cv2.COLOR_GRAY2RGB)
-        else:
-            return self
-
-    def isGray(self):
-        if len(self.shape) < 3:
-            return True
-        else:
-            return False
-        
+ 
 
 class RandomRotation(object):
     def __call__(self, sample):
         image, label = sample['image'], sample['label']
-        
-
-        # Converting image to rgb if it is in grayscale
-        if len(image.shape) < 3:
-            img_float32 = np.float32(image)
-            image = cv2.cvtColor(img_float32, cv2.COLOR_GRAY2RGB)
         
         h, w, c = image.shape
         # print('image[0][0][0] ',int(np.uint8(image)[0][0][0]), int(np.amax(np.uint8(image*255))))
@@ -387,12 +383,11 @@ if __name__ == '__main__':
     filename = 'image_set.dat'
     print(config.data_dir, config.model_dir, header_file, log_file, filename)
 
-    backtorgb = ConvertToRGB()
     resize = Resize(64)
     crop = RandomCrop(64)
     trotate = RandomRotation()
 
-    composed = transforms.Compose([Resize(64), RandomRotation(), Resize(64),
+    composed = transforms.Compose([convertToRGB(), Resize(64), RandomRotation(), Resize(64),
                                    ToTensor(), Normalization()])
  
     dataset = PlanktonDataSet(data_dir=config.data_dir, header_file = header_file,

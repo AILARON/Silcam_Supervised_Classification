@@ -15,7 +15,6 @@
 
 
 import torch
-from torch_tools.metrics import METRIX
 from tqdm import tqdm
 import time
 from torch import optim
@@ -25,6 +24,7 @@ from net import *
 from dataloader import *
 from torch import nn
 import torchvision.models as models
+from metrics import METRIX
 
 def adjust_learning_rate(optimizer, epoch, start_lr):
     """Gradually decay learning rate"""
@@ -123,7 +123,7 @@ def test(model, device, criterion, test_loader, log_file):
 def loadData(data_dir, header_file, filename, log_file, batch_size, input_size):
     fh = open(log_file, 'a+')
     fh.write('##### DATASET ######\n')
-    composed = transforms.Compose([Resize(input_size), RandomRotation(),
+    composed = transforms.Compose([convertToRGB(), Resize(input_size), RandomRotation(),
                                    Resize(input_size), ToTensor(), Normalization()])
     dataset = PlanktonDataSet(data_dir=data_dir, header_file=header_file,
                               csv_file=filename, transform=composed)
