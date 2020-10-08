@@ -9,8 +9,16 @@ dependencies:
     - torchvision
     - opencv
     - scikit-learn
+    - scikit-image
+    - pandas
+    - seaborn
+    - numpy
+    - matplotlib
+    - scipy
     - tqdm
     - time
+    - pillow
     - pip
     - pip:
         - opencv.contrib-python
+   

@@ -29,6 +29,9 @@ import cv2
 import random
 from PIL import Image
 
+from torch.utils.data import Dataset, DataLoader, random_split
+
+
 from torchutils import *
 from trainconfig import *
 
@@ -155,23 +158,28 @@ class PlanktonDataSet(Dataset):
         '''
         print('Import file list from the directory structure ')
         fileList = []
+
         for c_ind, c in enumerate(self.classList):
             print('  ', c)
             filepath = os.path.join(self.data_dir, c)   #DATABASE_PATH
-            files = [o for o in os.listdir(filepath) if o.endswith('.tiff')]
+            files = [o for o in os.listdir(filepath) if o.endswith('.jpg')]
             for f in files:
                 fileList.append([os.path.join(filepath, f), str(c_ind)])
         fileList = np.array(fileList)
         print('Shuffle dataset....')
         np.random.shuffle(fileList)
         self.data_list = fileList
+        print('*** fileList ***')
+        print(fileList)
+        print('**** save to data list *****')
+        print(self.data_list)
     ## functions related to the data save in the csv/text files
     def get_data_from_file(self):
         '''
         Read the data file and get the list of images along with their labels
         and assign the input_data to the data set
         '''
-        print('Get data from file ', self.data_dir, self.csv_file)
+        print('Get data from file ', os.path.join(self.data_dir, self.csv_file))
         self.input_data = pd.read_csv(os.path.join(self.data_dir, self.csv_file), header=None, delimiter=' ')
         print(self.input_data.head())
     def save_data_to_file(self, dataset, filename):
@@ -207,6 +215,23 @@ class Resize(object):
         new_h, new_w = int(new_h), int(new_w)
         img = transform.resize(image, (new_h, new_w))
         return {'image': img, 'label': label}
+
+
+class convertToRGB(object):
+    """Convert image to rgb if in gray scale.
+    """
+ 
+    def __call__(self, sample):
+        image, label = sample['image'], sample['label']
+        
+        # Converting image to rgb if it is in grayscale
+        if len(image.shape) < 3:
+            img = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+        
+        return {'image': img, 'label': label}
+
+
+
 
 class Rescale(object):
     """Rescale the image in a sample to a given size.
@@ -283,9 +308,12 @@ class RandomCrop(object):
 
         return {'image': image, 'label': label}
 
+ 
+
 class RandomRotation(object):
     def __call__(self, sample):
         image, label = sample['image'], sample['label']
+        
         h, w, c = image.shape
         # print('image[0][0][0] ',int(np.uint8(image)[0][0][0]), int(np.amax(np.uint8(image*255))))
 
@@ -300,6 +328,9 @@ class RandomRotation(object):
 
         return {'image': rot_image,
                 'label': label}
+
+
+
 
 class Normalization(object):
     def __call__(self, sample):
@@ -351,12 +382,14 @@ if __name__ == '__main__':
     log_file = os.path.join(config.model_dir, 'out.txt')
     filename = 'image_set.dat'
     print(config.data_dir, config.model_dir, header_file, log_file, filename)
+
     resize = Resize(64)
     crop = RandomCrop(64)
     trotate = RandomRotation()
 
-    composed = transforms.Compose([Resize(64), RandomRotation(), Resize(64),
+    composed = transforms.Compose([convertToRGB(), Resize(64), RandomRotation(), Resize(64),
                                    ToTensor(), Normalization()])
+ 
     dataset = PlanktonDataSet(data_dir=config.data_dir, header_file = header_file,
                  csv_file=filename, transform=composed)  # ,transform=Resize(64)
 

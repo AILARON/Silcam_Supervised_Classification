@@ -15,9 +15,9 @@
 
 import torch
 import torch.nn as nn
-from layers_2D import *
-from layers import *
-from torchsummary import summary
+#from layers_2D import *
+#from layers import *
+#from torchsummary import summary
 import torchvision.models as models
 
 class Net(nn.Module):
